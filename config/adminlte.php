@@ -226,25 +226,6 @@ return [
 
     'menu' => [
         [
-            'text'    => 'users',
-            'icon'    => 'fas fa-users',
-            'can' => 'edit-users',
-            'submenu' => [
-                [
-                    'text' => 'users',
-                    'icon'    => 'fas fa-users',
-                    'url'  => 'users',
-                    'can' => 'edit-users',
-                ],
-                [
-                    'text' => 'create',
-                    'icon'    => 'fas fa-user-plus',
-                    'url'  => 'users/create',
-                    'can' => 'edit-users',
-                ],
-            ],
-        ],
-        [
             'text'    => 'records',
             'icon'    => 'fas fa-receipt',
 //            'can' => 'edit-records',
@@ -259,6 +240,25 @@ return [
                     'text' => 'create',
                     'icon'    => 'fab fa-wpforms',
                     'url'  => 'records/create',
+                    'can' => 'edit-users',
+                ],
+            ],
+        ],
+        [
+            'text'    => 'users',
+            'icon'    => 'fas fa-users',
+            'can' => 'edit-users',
+            'submenu' => [
+                [
+                    'text' => 'users',
+                    'icon'    => 'fas fa-users',
+                    'url'  => 'users',
+                    'can' => 'edit-users',
+                ],
+                [
+                    'text' => 'create',
+                    'icon'    => 'fas fa-user-plus',
+                    'url'  => 'users/create',
                     'can' => 'edit-users',
                 ],
             ],
@@ -367,6 +367,31 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
+        'Moment' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '/vendor/moment/moment.min.js',
+                ],
+            ],
+        ],
+        'Datetimepicker' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js',
                 ],
             ],
         ],

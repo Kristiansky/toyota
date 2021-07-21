@@ -24,4 +24,9 @@ class Record extends Model
         }
         return '<span class="badge badge-'.$color.'">'.__('main.' . $this->status).'</span>';
     }
+    
+    public function dealer()
+    {
+        return $this->belongsTo('App\User', 'dealer_id', 'id');
+    }
 }

@@ -6,6 +6,7 @@ use App\Record;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class RecordController extends Controller
 {
@@ -25,12 +26,60 @@ class RecordController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->hasRole(['administrator', 'manager'])){
-            $records = Record::orderBy('id', 'desc')->paginate(10);
-        }elseif(auth()->user()->hasRole(['dealer'])){
-            $records = Record::orderBy('id', 'desc')->where('dealer_id', '=' , auth()->user()->id)->paginate(10);
+        $web_forms_options = $this->web_forms_options;
+        $dealer_info_options = $this->dealer_info_options;
+        $status_options = $this->status_options;
+        $dealer_progress_status_options = $this->dealer_progress_status_options;
+    
+        if(request('filter') && request('filter') == '1'){
+            $records_filter = array(
+                'client_name' => request('client_name'),
+                'web_form' => request('web_form'),
+                'dealer_info' => request('dealer_info'),
+                'status' => request('status'),
+                'dealer_progress_status' => request('dealer_progress_status'),
+                'created_at_from' => request('created_at_from'),
+                'created_at_to' => request('created_at_to'),
+            );
+            session()->put('records_filter', $records_filter);
+            return redirect(route('records.index'));
+        }elseif (request('reset') && request('reset') == '1'){
+            session()->forget('records_filter');
+            session()->forget('records_sort');
+            session()->forget('records_sort_direction');
+            return redirect(route('records.index'));
         }
-        return view('records.index', compact('records'));
+        
+        $records = Record::orderBy('id', 'desc');
+        if (auth()->user()->hasRole(['administrator', 'manager'])){
+        }elseif(auth()->user()->hasRole(['dealer'])){
+            $records->where('dealer_id', '=' , auth()->user()->id);
+        }
+        $records->where(function ($query){
+            if(session('records_filter')['client_name'] && session('records_filter')['client_name'] != ''){
+                $query->where('client_name', 'like', '%' . session('records_filter')['client_name'] . '%');
+            }
+            if(session('records_filter')['web_form'] && session('records_filter')['web_form'] != ''){
+                $query->where('web_form', '=', session('records_filter')['web_form']);
+            }
+            if(session('records_filter')['dealer_info'] && session('records_filter')['dealer_info'] != ''){
+                $query->where('dealer_info', '=', session('records_filter')['dealer_info']);
+            }
+            if(session('records_filter')['status'] && session('records_filter')['status'] != ''){
+                $query->where('status', '=', session('records_filter')['status']);
+            }
+            if(session('records_filter')['dealer_progress_status'] && session('records_filter')['dealer_progress_status'] != ''){
+                $query->where('dealer_progress_status', '=', session('records_filter')['dealer_progress_status']);
+            }
+            if(session('records_filter')['created_at_from'] && session('records_filter')['created_at_from'] != ''){
+                $query->where('created_at', '>', session('records_filter')['created_at_from'].' 00:00:00');
+            }
+            if(session('records_filter')['created_at_to'] && session('records_filter')['created_at_to'] != ''){
+                $query->where('created_at', '<', session('records_filter')['created_at_to'].' 23:59:59');
+            }
+        });
+        $records = $records->paginate(10);
+        return view('records.index', compact('records', 'web_forms_options', 'dealer_info_options', 'status_options', 'dealer_progress_status_options'));
     }
 
     /**
@@ -67,7 +116,16 @@ class RecordController extends Controller
         $request->validate($validation);
         $inputs = $request->all();
         $inputs['status'] = 'new';
-        Record::create($inputs);
+        $record = Record::create($inputs);
+    
+        $html = 'Здравейте, Имате нова заявка в системата. За по-лесен достъп може да проследите посочения линк:<br/><a href="' . route('records.show', $record) . '">Кликнете тук за да видите детайлите</a>.<br/>Поздрави, Екипът на Метрика';
+        
+        Mail::send([], [], function ($message) use ($html, $record) {
+            $message->to($record->dealer->email)
+                ->subject('Нова Запис №' . $record->id)
+                ->from('toyota.leads@metrica.bg')
+                ->setBody($html, 'text/html');
+        });
     
         return redirect(route('records.index'));
     }

@@ -9,6 +9,17 @@
 
 @section('content')
 <div class="row">
+    <div class="col-12">
+        @if(auth()->user()->hasRole('administrator'))
+            <a href="{{route('records.edit', $record->id)}}" class="btn btn-primary float-left mb-2"><i class="fa fa-pencil-alt"></i> {{__('main.edit_record')}}</a>
+        @elseif(auth()->user()->hasRole('manager'))
+            <a href="{{route('records.fill', $record->id)}}" class="btn btn-primary float-left mb-2"><i class="fa fa-edit"></i> {{__('main.fill_record')}}</a>
+        @elseif(auth()->user()->hasRole('dealer'))
+            <a href="{{route('records.fill', $record->id)}}" class="btn btn-primary float-left mb-2"><i class="fa fa-edit"></i> {{__('main.fill_record')}}</a>
+        @endif
+    </div>
+</div>
+<div class="row">
     <div class="col-8">
         <div class="card">
             <div class="card-body">

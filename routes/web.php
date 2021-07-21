@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function (){
     Route::put('/users/{role}/detach', 'UserController@detach')->name('users.role.detach');
     
     Route::resource('/records', 'RecordController');
+    Route::post('/records', 'RecordController@index')->name('records.index');
     Route::get('/records/{record}/fill', 'RecordController@fill')->name('records.fill');
 });
 
