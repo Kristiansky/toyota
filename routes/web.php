@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes();
+    
+    Route::get('/notify_morning', 'CronController@notifyMorning')->name('notify_morning');
+    Route::get('/notify_afternoon', 'CronController@notifyAfternoon')->name('notify_afternoon');
+    Route::get('/notify_next_day', 'CronController@notifyNextDay')->name('notify_next_day');
+    Route::get('/notify_again', 'CronController@notifyAgain')->name('notify_again');
 
 Route::middleware('auth')->group(function (){
     Route::get('/', 'HomeController@index')->name('home');
@@ -26,6 +31,7 @@ Route::middleware('auth')->group(function (){
     
     Route::resource('/records', 'RecordController');
     Route::post('/records', 'RecordController@index')->name('records.index');
+    Route::post('/records/store', 'RecordController@store')->name('records.store');
     Route::get('/records/{record}/fill', 'RecordController@fill')->name('records.fill');
 });
 

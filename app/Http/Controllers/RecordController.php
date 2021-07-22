@@ -118,11 +118,11 @@ class RecordController extends Controller
         $inputs['status'] = 'new';
         $record = Record::create($inputs);
     
-        $html = 'Здравейте, Имате нова заявка в системата. За по-лесен достъп може да проследите посочения линк:<br/><a href="' . route('records.show', $record) . '">Кликнете тук за да видите детайлите</a>.<br/>Поздрави, Екипът на Метрика';
+        $html = 'Здравейте,<br/>Имате нова заявка в системата. За по-лесен достъп може да проследите посочения линк:<br/><a href="' . route('records.show', $record) . '">Кликнете тук за да видите детайлите</a>.<br/>Поздрави,<br/>Екипът на Метрика';
         
         Mail::send([], [], function ($message) use ($html, $record) {
             $message->to($record->dealer->email)
-                ->subject('Нова Запис №' . $record->id)
+                ->subject('Нова заявка №' . $record->id)
                 ->from('toyota.leads@metrica.bg')
                 ->setBody($html, 'text/html');
         });
