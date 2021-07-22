@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', __('Dashboard'))
+@section('title', __('main.dashboard'))
 
 @section('content_header')
-    <h1>{{__('Dashboard')}}</h1>
+    <h1>{{__('main.dashboard')}}</h1>
 @stop
 
 @section('content')
@@ -11,7 +11,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+                <div class="card-header">{{ __('main.dashboard') }}</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -20,7 +20,7 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    {{ __('main.logged_in') }}
                 </div>
             </div>
         </div>
@@ -33,5 +33,5 @@
 @endsection
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+{{--    <script> console.log('Hi!'); </script>--}}
 @stop

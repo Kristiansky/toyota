@@ -62,7 +62,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Роля</th>
-                            <th>Slug</th>
                             <th colspan="2">Действия</th>
                         </tr>
                         </tfoot>
@@ -73,9 +72,6 @@
                                 </td>
                                 <td>
                                     {{$role->name}}
-                                </td>
-                                <td>
-                                    {{$role->slug}}
                                 </td>
                                 <td>
                                     @if(!$user->roles->contains($role))

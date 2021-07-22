@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', __('main.create_record'))
+@section('title', __('main.create'))
 
 @section('content_header')
-    <h1>{{ __('main.create_record') }}</h1>
+    <h1>{{ __('main.create') }}</h1>
 @stop
 
 @section('content')

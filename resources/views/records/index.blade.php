@@ -140,15 +140,15 @@
                                     <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th width="10%">Име на клиент</th>
-                                        <th>client_email</th>
-                                        <th>web_form</th>
-                                        <th>dealer_info</th>
-                                        <th>status</th>
-                                        <th>dealer_progress_status</th>
-                                        <th width="10%">created_at</th>
-                                        <th width="10%">updated_at</th>
-                                        <th width="15%">Действия</th>
+                                        <th width="10%">{{__('main.client_name')}}</th>
+                                        <th>{{__('main.client_email')}}</th>
+                                        <th>{{__('main.web_form')}}</th>
+                                        <th>{{__('main.dealer_info')}}</th>
+                                        <th>{{__('main.status')}}</th>
+                                        <th>{{__('main.dealer_progress_status')}}</th>
+                                        <th width="10%">{{__('main.created_at')}}</th>
+                                        <th width="10%">{{__('main.updated_at')}}</th>
+                                        <th width="15%">{{__('main.actions')}}</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
@@ -159,10 +159,10 @@
                                             <td>{{$record->id}}</td>
                                             <td><a href="{{route('records.show', $record->id)}}">{{$record->client_name}}</a></td>
                                             <td>{{$record->client_email}}</td>
-                                            <td>{{$record->web_form}}</td>
-                                            <td>{{$record->dealer_info}}</td>
+                                            <td>{{$record->web_form ? __('main.' . $record->web_form) : ''}}</td>
+                                            <td>{{$record->dealer_info ? __('main.' . $record->dealer_info) : ''}}</td>
                                             <td>{!!$record->colorStatus()!!}</td>
-                                            <td>{{$record->dealer_progress_status}}</td>
+                                            <td>{{$record->dealer_progress_status ? __('main.' . $record->dealer_progress_status) : ''}}</td>
                                             <td><small>{{$record->created_at}}</small></td>
                                             <td><small>{{$record->updated_at}}</small></td>
                                             <td>
