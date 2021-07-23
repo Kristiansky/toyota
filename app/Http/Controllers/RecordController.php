@@ -7,6 +7,9 @@ use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxRead;
 
 class RecordController extends Controller
 {
@@ -78,6 +81,68 @@ class RecordController extends Controller
                 $query->where('created_at', '<', session('records_filter')['created_at_to'].' 23:59:59');
             }
         });
+    
+        if(request('export') && request('export') == '1'){
+            $records = $records->get();
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setCellValue('A1', 'ID');
+            $sheet->setCellValue('B1', __('main.dealer'));
+            $sheet->setCellValue('C1', __('main.client_phone'));
+            $sheet->setCellValue('D1', __('main.client_email'));
+            $sheet->setCellValue('F1', __('main.client_name'));
+            $sheet->setCellValue('G1', __('main.city'));
+            $sheet->setCellValue('H1', __('main.company'));
+            $sheet->setCellValue('I1', __('main.received_at'));
+            $sheet->setCellValue('J1', __('main.web_form'));
+            $sheet->setCellValue('K1', __('main.content'));
+            $sheet->setCellValue('L1', __('main.contact_validation'));
+            $sheet->setCellValue('M1', __('main.operator_comment'));
+            $sheet->setCellValue('N1', __('main.car'));
+            $sheet->setCellValue('O1', __('main.approved_gdpr_messages'));
+            $sheet->setCellValue('P1', __('main.approved_gdpr_marketing'));
+            $sheet->setCellValue('Q1', __('main.approved_gdpr_no'));
+            $sheet->setCellValue('R1', __('main.status'));
+            $sheet->setCellValue('S1', __('main.dealer_info'));
+            $sheet->setCellValue('T1', __('main.dealer_progress_status'));
+            $sheet->setCellValue('U1', __('main.dealer_merchant'));
+            $sheet->setCellValue('V1', __('main.dealer_comment'));
+            $sheet->setCellValue('W1', __('main.created_at'));
+            $sheet->setCellValue('X1', __('main.updated_at'));
+            $row = 1;
+            foreach ($records as $record) {
+                $row++;
+                $sheet->setCellValue('A' . $row, $record->id);
+                $sheet->setCellValue('B' . $row, '['.$record->dealer->id.'] '.$record->dealer->name);
+                $sheet->setCellValue('C' . $row, $record->client_phone);
+                $sheet->setCellValue('D' . $row, $record->client_email);
+                $sheet->setCellValue('F' . $row, $record->client_name);
+                $sheet->setCellValue('G' . $row, $record->city);
+                $sheet->setCellValue('H' . $row, $record->company);
+                $sheet->setCellValue('I' . $row, $record->received_at);
+                $sheet->setCellValue('J' . $row, $record->web_form);
+                $sheet->setCellValue('K' . $row, $record->content);
+                $sheet->setCellValue('L' . $row, $record->contact_validation);
+                $sheet->setCellValue('M' . $row, $record->operator_comment);
+                $sheet->setCellValue('N' . $row, $record->car);
+                $sheet->setCellValue('O' . $row, $record->approved_gdpr_messages);
+                $sheet->setCellValue('P' . $row, $record->approved_gdpr_marketing);
+                $sheet->setCellValue('Q' . $row, $record->approved_gdpr_no);
+                $sheet->setCellValue('R' . $row, $record->status);
+                $sheet->setCellValue('S' . $row, $record->dealer_info);
+                $sheet->setCellValue('T' . $row, $record->dealer_progress_status);
+                $sheet->setCellValue('U' . $row, $record->dealer_merchant);
+                $sheet->setCellValue('V' . $row, $record->dealer_comment);
+                $sheet->setCellValue('W' . $row, $record->created_at);
+                $sheet->setCellValue('X' . $row, $record->updated_at);
+            }
+            $writer = new Xlsx($spreadsheet);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment; filename="'. urlencode('records-' . date("H-i-s-d-m-Y") . '.xlsx').'"');
+            $writer->save('php://output');
+            exit;
+        }
+        
         $records = $records->paginate(10);
         return view('records.index', compact('records', 'web_forms_options', 'dealer_info_options', 'status_options', 'dealer_progress_status_options'));
     }
