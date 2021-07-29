@@ -10,6 +10,7 @@
         'client_email'   => 'Имейл на клиент',
         'web_form'   => 'Форма за контакт',
         'dealer_info'   => 'Иниформация от дилър',
+        'dealer_info_short'   => 'Инифо от дилър',
         'status'   => 'Статус',
         'dealer_progress_status'   => 'Прогрес статус',
         'created_at_from'   => 'Дата от',

@@ -33,11 +33,15 @@ class RecordController extends Controller
         $dealer_info_options = $this->dealer_info_options;
         $status_options = $this->status_options;
         $dealer_progress_status_options = $this->dealer_progress_status_options;
+        $dealers = User::whereHas('roles', function ($query) {
+            $query->where('name', '=', 'dealer');
+        })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
     
         if(request('filter') && request('filter') == '1'){
             $records_filter = array(
                 'client_name' => request('client_name'),
                 'web_form' => request('web_form'),
+                'dealer' => request('dealer'),
                 'dealer_info' => request('dealer_info'),
                 'status' => request('status'),
                 'dealer_progress_status' => request('dealer_progress_status'),
@@ -64,6 +68,9 @@ class RecordController extends Controller
             }
             if(session('records_filter')['web_form'] && session('records_filter')['web_form'] != ''){
                 $query->where('web_form', '=', session('records_filter')['web_form']);
+            }
+            if(session('records_filter')['dealer'] && session('records_filter')['dealer'] != ''){
+                $query->where('dealer_id', '=', session('records_filter')['dealer']);
             }
             if(session('records_filter')['dealer_info'] && session('records_filter')['dealer_info'] != ''){
                 $query->where('dealer_info', '=', session('records_filter')['dealer_info']);
@@ -144,7 +151,7 @@ class RecordController extends Controller
         }
         
         $records = $records->paginate(10);
-        return view('records.index', compact('records', 'web_forms_options', 'dealer_info_options', 'status_options', 'dealer_progress_status_options'));
+        return view('records.index', compact('records', 'web_forms_options', 'dealer_info_options', 'status_options', 'dealer_progress_status_options', 'dealers'));
     }
 
     /**

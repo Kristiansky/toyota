@@ -22,13 +22,13 @@
                         <div class="row">
                             <div class="col-4 col-lg-1">
                                 <div class="form-group">
-                                    <label for="client_name">{{__('main.client_name')}}</label>
+                                    <label class="text-sm" for="client_name">{{__('main.client_name')}}</label>
                                     <input type="text" class="form-control form-control-sm" id="client_name" name="client_name" autocomplete="off" placeholder="{{__('main.client_name')}}" value="{{isset(session('records_filter')['client_name']) ? session('records_filter')['client_name'] : ''}}">
                                 </div>
                             </div>
-                            <div class="col-4 col-lg-2">
+                            <div class="col-4 col-lg-1">
                                 <div class="form-group">
-                                    <label for="web_form">{{__('main.web_form')}}</label>
+                                    <label class="text-sm" for="web_form">{{__('main.web_form')}}</label>
                                     <select class="form-control form-control-sm" id="web_form" name="web_form">
                                         <option value="">{{ __('main.choose') }}</option>
                                         @foreach($web_forms_options as $web_forms_option)
@@ -37,9 +37,20 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-4 col-lg-2">
+                            <div class="col-4 col-lg-1">
                                 <div class="form-group">
-                                    <label for="dealer_info">{{__('main.dealer_info')}}</label>
+                                    <label class="text-sm" for="dealer">{{__('main.dealer')}}</label>
+                                    <select class="form-control form-control-sm" id="dealer" name="dealer">
+                                        <option value="">{{ __('main.choose') }}</option>
+                                        @foreach($dealers as $dealer)
+                                            <option value="{{ $dealer->id }}" @if(session('records_filter')['dealer'] == $dealer->id) selected @endif>{{$dealer->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-4 col-lg-1">
+                                <div class="form-group">
+                                    <label class="text-sm" for="dealer_info">{{__('main.dealer_info_short')}}</label>
                                     <select class="form-control form-control-sm" id="dealer_info" name="dealer_info">
                                         <option value="">{{ __('main.choose') }}</option>
                                         @foreach($dealer_info_options as $dealer_info_option)
@@ -50,7 +61,7 @@
                             </div>
                             <div class="col-4 col-lg-1">
                                 <div class="form-group">
-                                    <label for="status">{{__('main.status')}}</label>
+                                    <label class="text-sm" for="status">{{__('main.status')}}</label>
                                     <select class="form-control form-control-sm" id="status" name="status">
                                         <option value="">{{ __('main.choose') }}</option>
                                         @foreach($status_options as $status_option)
@@ -61,7 +72,7 @@
                             </div>
                             <div class="col-4 col-lg-1">
                                 <div class="form-group">
-                                    <label for="dealer_progress_status">{{__('main.dealer_progress_status')}}</label>
+                                    <label class="text-sm" for="dealer_progress_status">{{__('main.dealer_progress_status')}}</label>
                                     <select class="form-control form-control-sm" id="dealer_progress_status" name="dealer_progress_status">
                                         <option value="">{{ __('main.choose') }}</option>
                                         @foreach($dealer_progress_status_options as $dealer_progress_status_option)
@@ -74,7 +85,7 @@
                                 <div class="row">
                                     <div class="col-4 col-lg-6">
                                         <div class="form-group">
-                                            <label for="created_at_from">
+                                            <label class="text-sm" for="created_at_from">
                                                 {{__('main.created_at_from')}}:
                                             </label>
                                             <div class="input-group">
@@ -87,7 +98,7 @@
                                     </div>
                                     <div class="col-4 col-lg-6">
                                         <div class="form-group">
-                                            <label for="created_at_to">
+                                            <label class="text-sm" for="created_at_to">
                                                 {{__('main.created_at_to')}}:
                                             </label>
                                             <div class="input-group">
@@ -137,14 +148,16 @@
                             <hr/>
                             <!-- DataTales Example -->
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered table-sm table-striped table-hover text-sm" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                     <tr>
                                         <th>ID</th>
                                         <th width="10%">{{__('main.client_name')}}</th>
                                         <th>{{__('main.client_email')}}</th>
                                         <th>{{__('main.web_form')}}</th>
+                                        <th>{{__('main.dealer')}}</th>
                                         <th>{{__('main.dealer_info')}}</th>
+                                        <th>{{__('main.dealer_merchant')}}</th>
                                         <th>{{__('main.status')}}</th>
                                         <th>{{__('main.dealer_progress_status')}}</th>
                                         <th width="10%">{{__('main.created_at')}}</th>
@@ -161,11 +174,13 @@
                                             <td><a href="{{route('records.show', $record->id)}}">{{$record->client_name}}</a></td>
                                             <td>{{$record->client_email}}</td>
                                             <td>{{$record->web_form ? __('main.' . $record->web_form) : ''}}</td>
+                                            <td>{{$record->dealer->name}}</td>
                                             <td>{{$record->dealer_info ? __('main.' . $record->dealer_info) : ''}}</td>
+                                            <td>{{$record->dealer_merchant}}</td>
                                             <td>{!!$record->colorStatus()!!}</td>
                                             <td>{{$record->dealer_progress_status ? __('main.' . $record->dealer_progress_status) : ''}}</td>
-                                            <td><small>{{$record->created_at}}</small></td>
-                                            <td><small>{{$record->updated_at}}</small></td>
+                                            <td>{{$record->created_at}}</td>
+                                            <td>{{$record->updated_at}}</td>
                                             <td>
                                                 @if(auth()->user()->hasRole('administrator'))
                                                     <a href="{{route('records.show', $record->id)}}" class="btn btn-success btn-sm float-left mr-2"><i class="fa fa-eye"></i></a>
