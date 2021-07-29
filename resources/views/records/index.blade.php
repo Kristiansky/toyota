@@ -156,12 +156,12 @@
                                         <th>{{__('main.client_email')}}</th>
                                         <th>{{__('main.web_form')}}</th>
                                         <th>{{__('main.dealer')}}</th>
-                                        <th>{{__('main.dealer_info')}}</th>
+                                        <th>{{__('main.dealer_info_short')}}</th>
                                         <th>{{__('main.dealer_merchant')}}</th>
                                         <th>{{__('main.status')}}</th>
                                         <th>{{__('main.dealer_progress_status')}}</th>
-                                        <th width="10%">{{__('main.created_at')}}</th>
-                                        <th width="10%">{{__('main.updated_at')}}</th>
+                                        <th width="7%">{{__('main.created_at')}}</th>
+                                        <th width="7%">{{__('main.updated_at')}}</th>
                                         <th width="10%">{{__('main.actions')}}</th>
                                     </tr>
                                     </thead>
