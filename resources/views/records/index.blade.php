@@ -162,7 +162,7 @@
                                         <th>{{__('main.dealer_progress_status')}}</th>
                                         <th width="10%">{{__('main.created_at')}}</th>
                                         <th width="10%">{{__('main.updated_at')}}</th>
-                                        <th width="15%">{{__('main.actions')}}</th>
+                                        <th width="10%">{{__('main.actions')}}</th>
                                     </tr>
                                     </thead>
                                     <tfoot>
