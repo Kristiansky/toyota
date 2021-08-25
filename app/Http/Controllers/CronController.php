@@ -102,21 +102,25 @@ class CronController extends Controller
             $html = 'Здравейте,<br/>Имате заявка в системата, на изчакване 24часа. Моля влезте в системата, за да я обработите. За по-лесен достъп може да проследите посочения линк:<br/><a href="' . route('records.show', $record) . '">Кликнете тук за да видите детайлите</a>.<br/>Поздрави,<br/>Екипът на Метрика';
             $subject = 'Напомняне - закъсняла Нова заявка с повече от 24ч';
         }
-    
-        $cc = [];
-        if (strpos($record->dealer->additional_emails, ',') !== false) {
-            $cc = explode(',', $record->dealer->additional_emails);
-            $cc = array_map('trim', $cc);
-        }elseif($record->dealer->additional_emails != null){
-            $cc = [$record->dealer->additional_emails];
-        }
         
-        Mail::send([], [], function ($message) use ($html, $subject, $record, $cc) {
-            $message->to($record->dealer->email)
-                ->cc($cc)
-                ->subject($subject)
-                ->from('toyota.leads@metrica.bg')
-                ->setBody($html, 'text/html');
-        });
+        $emails = [$record->dealer->email];
+        if (strpos($record->dealer->additional_emails, ',') !== false) {
+            $cc_emails = explode(',', $record->dealer->additional_emails);
+            $cc_emails = array_map('trim', $cc_emails);
+            foreach ($cc_emails as $cc_email){
+                $emails[] = $cc_email;
+            }
+        }elseif(strpos($record->dealer->additional_emails, ',') !== true && $record->dealer->additional_emails != null){
+            $emails[] = $record->dealer->additional_emails;
+        }
+    
+        foreach($emails as $email){
+            Mail::send([], [], function ($message) use ($html, $subject, $email) {
+                $message->to($email)
+                    ->subject($subject)
+                    ->from('toyota.leads@metrica.bg')
+                    ->setBody($html, 'text/html');
+            });
+        }
     }
 }

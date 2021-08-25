@@ -196,21 +196,26 @@ class RecordController extends Controller
     
         $html = 'Здравейте,<br/>Имате нова заявка в системата. За по-лесен достъп може да проследите посочения линк:<br/><a href="' . route('records.show', $record) . '">Кликнете тук за да видите детайлите</a>.<br/>Поздрави,<br/>Екипът на Метрика';
     
-        $cc = [];
+        $emails = [$record->dealer->email];
         if (strpos($record->dealer->additional_emails, ',') !== false) {
-            $cc = explode(',', $record->dealer->additional_emails);
-            $cc = array_map('trim', $cc);
-        }elseif($record->dealer->additional_emails != null){
-            $cc = [$record->dealer->additional_emails];
+            $cc_emails = explode(',', $record->dealer->additional_emails);
+            $cc_emails = array_map('trim', $cc_emails);
+            foreach ($cc_emails as $cc_email){
+                $emails[] = $cc_email;
+            }
+        }elseif(strpos($record->dealer->additional_emails, ',') !== true && $record->dealer->additional_emails != null){
+            $emails[] = $record->dealer->additional_emails;
+        }
+        
+        foreach($emails as $email){
+            Mail::send([], [], function ($message) use ($html, $record, $email) {
+                $message->to($email)
+                    ->subject('Нова заявка №' . $record->id)
+                    ->from('toyota.leads@metrica.bg')
+                    ->setBody($html, 'text/html');
+            });
         }
     
-        Mail::send([], [], function ($message) use ($html, $record, $cc) {
-            $message->to($record->dealer->email)
-                ->cc($cc)
-                ->subject('Нова заявка №' . $record->id)
-                ->from('toyota.leads@metrica.bg')
-                ->setBody($html, 'text/html');
-        });
     
         return redirect(route('records.index'));
     }
