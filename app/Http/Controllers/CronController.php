@@ -103,9 +103,12 @@ class CronController extends Controller
             $subject = 'Напомняне - закъсняла Нова заявка с повече от 24ч';
         }
     
-        Mail::send([], [], function ($message) use ($html, $subject, $record) {
+        $cc = explode(',', $record->dealer->additional_emails);
+        $cc = array_map('trim', $cc);
+        
+        Mail::send([], [], function ($message) use ($html, $subject, $record, $cc) {
             $message->to($record->dealer->email)
-                ->cc($record->dealer->additional_emails)
+                ->cc($cc)
                 ->subject($subject)
                 ->from('toyota.leads@metrica.bg')
                 ->setBody($html, 'text/html');

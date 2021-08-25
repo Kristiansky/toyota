@@ -196,9 +196,12 @@ class RecordController extends Controller
     
         $html = 'Здравейте,<br/>Имате нова заявка в системата. За по-лесен достъп може да проследите посочения линк:<br/><a href="' . route('records.show', $record) . '">Кликнете тук за да видите детайлите</a>.<br/>Поздрави,<br/>Екипът на Метрика';
         
-        Mail::send([], [], function ($message) use ($html, $record) {
+        $cc = explode(',', $record->dealer->additional_emails);
+        $cc = array_map('trim', $cc);
+        
+        Mail::send([], [], function ($message) use ($html, $record, $cc) {
             $message->to($record->dealer->email)
-                ->cc($record->dealer->additional_emails)
+                ->cc($cc)
                 ->subject('Нова заявка №' . $record->id)
                 ->from('toyota.leads@metrica.bg')
                 ->setBody($html, 'text/html');
