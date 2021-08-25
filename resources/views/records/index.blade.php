@@ -28,6 +28,12 @@
                             </div>
                             <div class="col-4 col-lg-1">
                                 <div class="form-group">
+                                    <label class="text-sm" for="client_email">{{__('main.client_email')}}</label>
+                                    <input type="text" class="form-control form-control-sm" id="client_email" name="client_email" autocomplete="off" placeholder="{{__('main.client_email')}}" value="{{isset(session('records_filter')['client_email']) ? session('records_filter')['client_email'] : ''}}">
+                                </div>
+                            </div>
+                            <div class="col-4 col-lg-1">
+                                <div class="form-group">
                                     <label class="text-sm" for="web_form">{{__('main.web_form')}}</label>
                                     <select class="form-control form-control-sm" id="web_form" name="web_form">
                                         <option value="">{{ __('main.choose') }}</option>

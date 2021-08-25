@@ -40,6 +40,7 @@ class RecordController extends Controller
         if(request('filter') && request('filter') == '1'){
             $records_filter = array(
                 'client_name' => request('client_name'),
+                'client_email' => request('client_email'),
                 'web_form' => request('web_form'),
                 'dealer' => request('dealer'),
                 'dealer_info' => request('dealer_info'),
@@ -65,6 +66,9 @@ class RecordController extends Controller
         $records->where(function ($query){
             if(session('records_filter')['client_name'] && session('records_filter')['client_name'] != ''){
                 $query->where('client_name', 'like', '%' . session('records_filter')['client_name'] . '%');
+            }
+            if(session('records_filter')['client_email'] && session('records_filter')['client_email'] != ''){
+                $query->where('client_email', 'like', '%' . session('records_filter')['client_email'] . '%');
             }
             if(session('records_filter')['web_form'] && session('records_filter')['web_form'] != ''){
                 $query->where('web_form', '=', session('records_filter')['web_form']);
