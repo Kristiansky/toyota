@@ -103,8 +103,13 @@ class CronController extends Controller
             $subject = 'Напомняне - закъсняла Нова заявка с повече от 24ч';
         }
     
-        $cc = explode(',', $record->dealer->additional_emails);
-        $cc = array_map('trim', $cc);
+        $cc = [];
+        if (strpos($record->dealer->additional_emails, ',') !== false) {
+            $cc = explode(',', $record->dealer->additional_emails);
+            $cc = array_map('trim', $cc);
+        }elseif($record->dealer->additional_emails != null){
+            $cc = [$record->dealer->additional_emails];
+        }
         
         Mail::send([], [], function ($message) use ($html, $subject, $record, $cc) {
             $message->to($record->dealer->email)

@@ -195,10 +195,15 @@ class RecordController extends Controller
         $record = Record::create($inputs);
     
         $html = 'Здравейте,<br/>Имате нова заявка в системата. За по-лесен достъп може да проследите посочения линк:<br/><a href="' . route('records.show', $record) . '">Кликнете тук за да видите детайлите</a>.<br/>Поздрави,<br/>Екипът на Метрика';
-        
-        $cc = explode(',', $record->dealer->additional_emails);
-        $cc = array_map('trim', $cc);
-        
+    
+        $cc = [];
+        if (strpos($record->dealer->additional_emails, ',') !== false) {
+            $cc = explode(',', $record->dealer->additional_emails);
+            $cc = array_map('trim', $cc);
+        }elseif($record->dealer->additional_emails != null){
+            $cc = [$record->dealer->additional_emails];
+        }
+    
         Mail::send([], [], function ($message) use ($html, $record, $cc) {
             $message->to($record->dealer->email)
                 ->cc($cc)
