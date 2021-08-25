@@ -39,11 +39,13 @@ class UserController extends Controller{
             $inputs = request()->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'email', 'max:255'],
+                'additional_emails' => ['nullable'],
             ]);
         }else{
             $inputs = request()->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'email', 'max:255'],
+                'additional_emails' => ['nullable'],
                 'password' => ['min:6', 'max:255', 'confirmed']
             ]);
         }

@@ -27,6 +27,11 @@
                     @enderror
                 </div>
                 <div class="form-group">
+                    <label for="additional_emails">Допълнителни Email адреси</label>
+                    <textarea class="form-control" id="additional_emails" name="additional_emails" placeholder="example@site.com, example2@site.org">{{$user->additional_emails}}</textarea>
+                    <small id="additional_emailsHelp" class="form-text text-muted">Отделяйте ги със запетайка!</small>
+                </div>
+                <div class="form-group">
                     <label for="password">Парола</label>
                     <input type="password" class="form-control  @error('password') is-invalid @enderror" id="password" name="password">
                     @error('password')
