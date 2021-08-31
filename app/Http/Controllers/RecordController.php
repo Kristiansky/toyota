@@ -225,12 +225,12 @@ class RecordController extends Controller
         }
         
         foreach($emails as $email){
-            /*Mail::send([], [], function ($message) use ($html, $record, $email) {
+            Mail::send([], [], function ($message) use ($html, $record, $email) {
                 $message->to($email)
                     ->subject('Нова заявка №' . $record->id . ' | ' . $record->dealer->name)
                     ->from('toyota.leads@metrica.bg')
                     ->setBody($html, 'text/html');
-            });*/
+            });
         }
     
     
