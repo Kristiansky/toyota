@@ -1,4 +1,4 @@
-button[data-id="dealer_id"]{
+button[data-id="dealer_id"], button[data-id="dealer_merchant"]{
     border: 1px solid #ced4da;
     background-color: #fff;
 }

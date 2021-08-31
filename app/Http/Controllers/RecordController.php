@@ -34,7 +34,13 @@ class RecordController extends Controller
         $status_options = $this->status_options;
         $dealer_progress_status_options = $this->dealer_progress_status_options;
         $dealers = User::whereHas('roles', function ($query) {
-            $query->where('name', '=', 'dealer');
+            $query->where('slug', '=', 'dealer');
+        })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
+        $merchants = User::whereHas('roles', function ($query) {
+            $query->where('slug', '=', 'merchant');
+            if (auth()->user()->hasRole(['dealer'])){
+                $query->where('parent_id', '=', auth()->user()->id);
+            }
         })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
     
         if(request('filter') && request('filter') == '1'){
@@ -60,9 +66,13 @@ class RecordController extends Controller
         }
         
         $records = Record::orderBy('id', 'desc');
+        
         if (auth()->user()->hasRole(['administrator', 'manager'])){
+        
         }elseif(auth()->user()->hasRole(['dealer'])){
             $records->where('dealer_id', '=' , auth()->user()->id);
+        }elseif(auth()->user()->hasRole(['merchant'])){
+            $records->where('dealer_merchant', '=' , auth()->user()->id);
         }
         $records->where(function ($query){
             if(session('records_filter')['client_name'] && session('records_filter')['client_name'] != ''){
@@ -159,7 +169,7 @@ class RecordController extends Controller
         }
         
         $records = $records->paginate(10);
-        return view('records.index', compact('records', 'web_forms_options', 'dealer_info_options', 'status_options', 'dealer_progress_status_options', 'dealers'));
+        return view('records.index', compact('records', 'web_forms_options', 'dealer_info_options', 'status_options', 'dealer_progress_status_options', 'dealers', 'merchants'));
     }
 
     /**
@@ -175,9 +185,12 @@ class RecordController extends Controller
         $dealer_info_options = $this->dealer_info_options;
         $dealer_progress_status_options = $this->dealer_progress_status_options;
         $dealers = User::whereHas('roles', function ($query) {
-            $query->where('name', '=', 'dealer');
+            $query->where('slug', '=', 'dealer');
         })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
-        return view('records.create', compact('web_forms_options','cars_options', 'contact_validation_options', 'dealers', 'dealer_info_options', 'dealer_progress_status_options'));
+        $merchants = User::whereHas('roles', function ($query) {
+            $query->where('slug', '=', 'merchant');
+        })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
+        return view('records.create', compact('web_forms_options','cars_options', 'contact_validation_options', 'dealers', 'merchants', 'dealer_info_options', 'dealer_progress_status_options'));
     }
 
     /**
@@ -212,12 +225,12 @@ class RecordController extends Controller
         }
         
         foreach($emails as $email){
-            Mail::send([], [], function ($message) use ($html, $record, $email) {
+            /*Mail::send([], [], function ($message) use ($html, $record, $email) {
                 $message->to($email)
                     ->subject('Нова заявка №' . $record->id . ' | ' . $record->dealer->name)
                     ->from('toyota.leads@metrica.bg')
                     ->setBody($html, 'text/html');
-            });
+            });*/
         }
     
     
@@ -250,9 +263,12 @@ class RecordController extends Controller
         $dealer_progress_status_options = $this->dealer_progress_status_options;
         $status_options = $this->status_options;
         $dealers = User::whereHas('roles', function ($query) {
-            $query->where('name', '=', 'dealer');
+            $query->where('slug', '=', 'dealer');
         })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
-        return view('records.edit', compact('record', 'web_forms_options', 'cars_options', 'contact_validation_options', 'dealers', 'dealer_info_options', 'dealer_progress_status_options', 'status_options'));
+        $merchants = User::whereHas('roles', function ($query) {
+            $query->where('slug', '=', 'merchant');
+        })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
+        return view('records.edit', compact('record', 'web_forms_options', 'cars_options', 'contact_validation_options', 'dealers', 'merchants', 'dealer_info_options', 'dealer_progress_status_options', 'status_options'));
     }
 
     /**
@@ -266,15 +282,39 @@ class RecordController extends Controller
     {
         $validation = array(
             'dealer_id' => 'required',
-            'dealer_merchant' => 'required|min:3|max:255',
+            'dealer_merchant' => 'required',
         );
     
         if(request('fillForm')){
             $validation = array(
                 'status' => 'required',
-                'dealer_merchant' => 'required|min:3|max:255',
+                'dealer_merchant' => 'required',
             );
             unset($request['fillForm']);
+        }
+        if((int)$record->dealer_merchant != (int)$request->dealer_merchant){
+    
+            $html = 'Здравейте,<br/>Имате има разпределена заявка в системата. За по-лесен достъп може да проследите посочения линк:<br/><a href="' . route('records.show', $record) . '">Кликнете тук за да видите детайлите</a>.<br/>Поздрави,<br/>Екипът на Метрика';
+            
+            $emails = [$record->the_merchant()->email];
+            if (strpos($record->the_merchant()->additional_emails, ',') !== false) {
+                $cc_emails = explode(',', $record->the_merchant()->additional_emails);
+                $cc_emails = array_map('trim', $cc_emails);
+                foreach ($cc_emails as $cc_email){
+                    $emails[] = $cc_email;
+                }
+            }elseif(strpos($record->the_merchant()->additional_emails, ',') !== true && $record->the_merchant()->additional_emails != null){
+                $emails[] = $record->the_merchant()->additional_emails;
+            }
+    
+            foreach($emails as $email){
+                Mail::send([], [], function ($message) use ($html, $record, $email) {
+                    $message->to($email)
+                        ->subject('Разпределена заявка №' . $record->id . ' | ' . $record->dealer->name)
+                        ->from('toyota.leads@metrica.bg')
+                        ->setBody($html, 'text/html');
+                });
+            }
         }
         
         $request->validate($validation);
@@ -304,6 +344,12 @@ class RecordController extends Controller
         $status_options_fill = $this->status_options_fill;
         $dealer_info_options = $this->dealer_info_options;
         $dealer_progress_status_options = $this->dealer_progress_status_options;
-        return view('records.fill', compact('record', 'status_options_fill', 'dealer_info_options', 'dealer_progress_status_options'));
+        $merchants = User::whereHas('roles', function ($query) {
+            $query->where('slug', '=', 'merchant');
+            if (auth()->user()->hasRole(['dealer'])){
+                $query->where('parent_id', '=', auth()->user()->id);
+            }
+        })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
+        return view('records.fill', compact('record', 'status_options_fill', 'dealer_info_options', 'dealer_progress_status_options', 'merchants'));
     }
 }

@@ -45,6 +45,15 @@
                     <div class="invalid-feedback">{{$message}}</div>
                     @enderror
                 </div>
+                <div class="form-group">
+                    <label for="parent_id">{{__('main.dealer')}}</label>
+                    <select class="form-control selectpicker" data-live-search="true" data-size="0" id="parent_id" name="parent_id" title="{{ __('main.choose') }}">
+                        <option value="">{{ __('main.choose') }}</option>
+                        @foreach($dealers as $dealer)
+                            <option value="{{$dealer->id}}">{{ $dealer->name }} [{{ $dealer->email }}]</option>
+                        @endforeach
+                    </select>
+                </div>
                 <button type="submit" class="btn btn-primary">Запази</button>
             </form>
         </div>

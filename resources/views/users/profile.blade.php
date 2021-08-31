@@ -45,6 +45,17 @@
                     <div class="invalid-feedback">{{$message}}</div>
                     @enderror
                 </div>
+                @if(auth()->user()->hasRole('administrator'))
+                    <div class="form-group">
+                        <label for="parent_id">{{__('main.dealer')}}</label>
+                        <select class="form-control selectpicker" data-live-search="true" data-size="0" id="parent_id" name="parent_id" title="{{ __('main.choose') }}">
+                            <option value="">{{ __('main.choose') }}</option>
+                            @foreach($dealers as $dealer)
+                                <option value="{{$dealer->id}}" {{$dealer->id == $user->parent_id ? 'selected' : ''}}>{{ $dealer->name }} [{{ $dealer->email }}]</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
                 <button type="submit" class="btn btn-primary">Запази</button>
             </form>
         </div>

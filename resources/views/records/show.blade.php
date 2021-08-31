@@ -188,7 +188,7 @@
                             {{__('main.dealer_merchant')}}
                         </td>
                         <td>
-                            <strong>{{$record->dealer_merchant}}</strong>
+                            <strong>@if($record->dealer_merchant != null) {{$record->the_merchant()->name}} @endif</strong>
                         </td>
                     </tr>
                     <tr>

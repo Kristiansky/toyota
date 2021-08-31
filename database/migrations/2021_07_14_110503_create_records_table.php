@@ -34,7 +34,7 @@ class CreateRecordsTable extends Migration
             $table->enum('status', ['new', 'reminded', 'late', 'accepted', 'in_process', 'completed'])->nullable();
             $table->enum('dealer_info', ['order', 'test_drive_success', 'test_drive_set', 'will_visit_showroom', 'sent_offer', 'sent_borchure', 'sent_leasing_sim', 'second_hand', 'not_serious_interest', 'waiting', 'gave_up', 'no_feedback', 'wrong_contact'])->nullable();
             $table->enum('dealer_progress_status', ['client', 'hot', 'warm', 'cold', 'lost'])->nullable();
-            $table->string('dealer_merchant')->nullable();
+            $table->foreignId('dealer_merchant')->unsigned()->nullable()->index();
             $table->text('dealer_comment')->nullable();
             $table->timestamps();
         });

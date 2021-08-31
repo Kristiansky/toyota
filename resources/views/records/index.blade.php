@@ -43,17 +43,19 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-4 col-lg-1">
-                                <div class="form-group">
-                                    <label class="text-sm" for="dealer">{{__('main.dealer')}}</label>
-                                    <select class="form-control form-control-sm" id="dealer" name="dealer">
-                                        <option value="">{{ __('main.choose') }}</option>
-                                        @foreach($dealers as $dealer)
-                                            <option value="{{ $dealer->id }}" @if(session('records_filter')['dealer'] == $dealer->id) selected @endif>{{$dealer->name}}</option>
-                                        @endforeach
-                                    </select>
+                            @if(auth()->user()->hasRole('administrator') || auth()->user()->hasRole('manager'))
+                                <div class="col-4 col-lg-1">
+                                    <div class="form-group">
+                                        <label class="text-sm" for="dealer">{{__('main.dealer')}}</label>
+                                        <select class="form-control form-control-sm" id="dealer" name="dealer">
+                                            <option value="">{{ __('main.choose') }}</option>
+                                            @foreach($dealers as $dealer)
+                                                <option value="{{ $dealer->id }}" @if(session('records_filter')['dealer'] == $dealer->id) selected @endif>{{$dealer->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                             <div class="col-4 col-lg-1">
                                 <div class="form-group">
                                     <label class="text-sm" for="dealer_info">{{__('main.dealer_info_short')}}</label>
@@ -65,14 +67,19 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-4 col-lg-1">
-                                <div class="form-group">
-                                    <label class="text-sm" for="dealer_merchant">
-                                        {{__('main.dealer_merchant')}}
-                                    </label>
-                                    <input type="text" class="form-control form-control-sm" name="dealer_merchant" id="dealer_merchant" autocomplete="off" placeholder="{{__('main.dealer_merchant')}}" value="{{isset(session('records_filter')['dealer_merchant']) ? session('records_filter')['dealer_merchant'] : ''}}">
+                            @if(auth()->user()->hasRole('administrator') || auth()->user()->hasRole('manager') || auth()->user()->hasRole('dealer'))
+                                <div class="col-4 col-lg-1">
+                                    <div class="form-group">
+                                        <label class="text-sm" for="dealer_merchant">{{__('main.dealer_merchant')}}</label>
+                                        <select class="form-control form-control-sm" id="dealer_merchant" name="dealer_merchant">
+                                            <option value="">{{ __('main.choose') }}</option>
+                                            @foreach($merchants as $merchant)
+                                                <option value="{{ $merchant->id }}" @if(session('records_filter')['dealer_merchant'] == $merchant->id) selected @endif>{{$merchant->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                             <div class="col-4 col-lg-1">
                                 <div class="form-group">
                                     <label class="text-sm" for="status">{{__('main.status')}}</label>
@@ -118,7 +125,9 @@
                             <div class="col-8 col-lg-2 pt-4 mt-2">
                                 <button type="submit" name="filter" value="1" class="btn btn-primary btn-sm mr-2">{{__('main.filter')}}</button>
                                 <button type="submit" name="reset" value="1" class="btn btn-default btn-sm mr-2">{{__('main.reset')}}</button>
-                                <button type="submit" name="export" value="1" class="btn btn-warning btn-sm mr-2">{{__('main.export_xlsx')}}</button>
+                                @if(auth()->user()->hasRole('administrator') || auth()->user()->hasRole('manager') || auth()->user()->hasRole('dealer'))
+                                    <button type="submit" name="export" value="1" class="btn btn-warning btn-sm mr-2">{{__('main.export_xlsx')}}</button>
+                                @endif
                             </div>
                         </div>
                     </form>
@@ -180,7 +189,7 @@
                                             <td>{{$record->web_form ? __('main.' . $record->web_form) : ''}}</td>
                                             <td>{{$record->dealer->name}}</td>
                                             <td>{{$record->dealer_info ? __('main.' . $record->dealer_info) : ''}}</td>
-                                            <td>{{$record->dealer_merchant}}</td>
+                                            <td>@if ($record->dealer_merchant != null) {{$record->the_merchant()->name}} @endif</td>
                                             <td>{!!$record->colorStatus()!!}</td>
                                             <td>{{$record->dealer_progress_status ? __('main.' . $record->dealer_progress_status) : ''}}</td>
                                             <td>{{$record->created_at}}</td>
@@ -200,6 +209,8 @@
                                                 @elseif(auth()->user()->hasRole('dealer'))
                                                     <a href="{{route('records.show', $record->id)}}" class="btn btn-success btn-sm float-left mr-2"><i class="fa fa-eye"></i></a>
                                                     <a href="{{route('records.fill', $record->id)}}" class="btn btn-primary btn-sm float-left mr-2"><i class="fa fa-edit"></i></a>
+                                                @elseif(auth()->user()->hasRole('merchant'))
+                                                    <a href="{{route('records.show', $record->id)}}" class="btn btn-success btn-sm float-left mr-2"><i class="fa fa-eye"></i></a>
                                                 @endif
                                             </td>
                                         </tr>

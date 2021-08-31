@@ -6,9 +6,21 @@ use App\Record;
 use Faker\Generator as Faker;
 
 $factory->define(Record::class, function (Faker $faker) {
+    $dealer_id = $faker->numberBetween(3,15);
+    if($dealer_id == 5){
+        $dealer_merchant = 16;
+    }elseif($dealer_id == 10){
+        $dealer_merchant = 17;
+    }elseif($dealer_id == 15){
+        $dealer_merchant = 18;
+    }else{
+        $dealer_merchant = null;
+    }
+    
+    
     return [
         'user_id' => 1,
-        'dealer_id' => $faker->numberBetween(3,15),
+        'dealer_id' => $dealer_id,
         'client_phone' => $faker->phoneNumber,
         'client_email' => $faker->safeEmail,
         'client_name' => $faker->name,
@@ -26,7 +38,7 @@ $factory->define(Record::class, function (Faker $faker) {
         'status' => $faker->randomElement(['new', 'reminded', 'late', 'accepted', 'in_process', 'completed']),
         'dealer_info' => $faker->randomElement(['order', 'test_drive_success', 'test_drive_set', 'will_visit_showroom', 'sent_offer', 'sent_borchure', 'sent_leasing_sim', 'second_hand', 'not_serious_interest', 'waiting', 'gave_up', 'no_feedback', 'wrong_contact']),
         'dealer_progress_status' => $faker->randomElement(['client', 'hot', 'warm', 'cold', 'lost']),
-        'dealer_merchant' => $faker->name,
+        'dealer_merchant' => $dealer_merchant,
         'dealer_comment' => $faker->realText(10,1),
     ];
 });

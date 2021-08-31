@@ -29,4 +29,12 @@ class Record extends Model
     {
         return $this->belongsTo('App\User', 'dealer_id', 'id');
     }
+    
+    public function the_merchant()
+    {
+        if($this->dealer_merchant != null){
+            return User::where('id', '=', $this->dealer_merchant)->first();
+        }
+        return false;
+    }
 }

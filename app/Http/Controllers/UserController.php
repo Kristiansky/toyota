@@ -9,7 +9,10 @@ use Illuminate\Http\Request;
 class UserController extends Controller{
     
     public function create(){
-        return view('users.create');
+        $dealers = User::whereHas('roles', function ($query) {
+            $query->where('slug', '=', 'dealer');
+        })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
+        return view('users.create', compact('dealers'));
     }
     
     public function store(Request $request){
@@ -31,7 +34,10 @@ class UserController extends Controller{
     
     public function show(User $user){
         $roles = Role::all();
-        return view('users.profile', compact('user', 'roles'));
+        $dealers = User::whereHas('roles', function ($query) {
+            $query->where('slug', '=', 'dealer');
+        })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
+        return view('users.profile', compact('user', 'roles', 'dealers'));
     }
     
     public function update(User $user){
@@ -40,12 +46,14 @@ class UserController extends Controller{
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'email', 'max:255'],
                 'additional_emails' => ['nullable'],
+                'parent_id' => ['nullable'],
             ]);
         }else{
             $inputs = request()->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'email', 'max:255'],
                 'additional_emails' => ['nullable'],
+                'parent_id' => ['nullable'],
                 'password' => ['min:6', 'max:255', 'confirmed']
             ]);
         }

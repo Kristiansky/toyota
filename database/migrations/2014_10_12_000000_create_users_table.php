@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->text('additional_emails')->nullable();
+            $table->foreignId('parent_id')->unsigned()->nullable()->index();
             $table->timestamps();
         });
     }

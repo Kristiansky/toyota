@@ -171,8 +171,16 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label for="dealer_merchant" class="text-secondary">{{__('main.dealer_merchant')}}</label>
-                            <input type="text" class="form-control " id="dealer_merchant" name="dealer_merchant" placeholder="{{__('main.dealer_merchant')}}" disabled/>
+                            <label for="dealer_merchant">{{__('main.dealer_merchant')}} <span class="text-danger">*</span></label>
+                            <select class="form-control selectpicker @error('dealer_merchant') is-invalid @enderror " data-live-search="true" data-size="0" id="dealer_merchant" name="dealer_merchant" title="{{ __('main.choose') }}" disabled>
+                                <option value="">{{ __('main.choose') }}</option>
+                                @foreach($merchants as $merchant)
+                                    <option value="{{$merchant->id}}">{{ $merchant->name }} [{{ $merchant->email }}]</option>
+                                @endforeach
+                            </select>
+                            @error('dealer_merchant')
+                            <div class="invalid-feedback">{{$message}}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-lg-6">

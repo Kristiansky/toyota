@@ -34,20 +34,26 @@
                 'remember_token' => Str::random(10),
             ]);
             $administrator = Role::create([
-                'name' => 'Administrator',
+                'name' => 'Администратор',
                 'slug' => 'administrator',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
             $manager = Role::create([
-                'name' => 'Manager',
+                'name' => 'Мениджър',
                 'slug' => 'manager',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
             $dealer = Role::create([
-                'name' => 'Dealer',
+                'name' => 'Дилър',
                 'slug' => 'dealer',
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+            ]);
+            $merchant = Role::create([
+                'name' => 'Търговец',
+                'slug' => 'merchant',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
@@ -170,9 +176,39 @@
                 'remember_token' => Str::random(10),
             ]);
             $tmauto->roles()->attach($dealer);
+    
+            $test_merchant = User::create([
+                'name' => 'Тестов Търговец',
+                'email' => 'test_merchant@sharklasers.com',
+                'email_verified_at' => now(),
+                'parent_id' => '5',
+                'password' => '12345678', //
+                'remember_token' => Str::random(10),
+            ]);
+            $test_merchant->roles()->attach($merchant);
+            
+            $test_merchant_2 = User::create([
+                'name' => 'Тестов Търговец 2',
+                'email' => 'test_merchant2@sharklasers.com',
+                'email_verified_at' => now(),
+                'parent_id' => '10',
+                'password' => '12345678', //
+                'remember_token' => Str::random(10),
+            ]);
+            $test_merchant_2->roles()->attach($merchant);
+            
+            $test_merchant_3 = User::create([
+                'name' => 'Тестов Търговец 3',
+                'email' => 'test_merchant3@sharklasers.com',
+                'email_verified_at' => now(),
+                'parent_id' => '15',
+                'password' => '12345678', //
+                'remember_token' => Str::random(10),
+            ]);
+            $test_merchant_3->roles()->attach($merchant);
 
 //            factory(User::class, 13)->create();
-            factory(Record::class, 15)->create();
+            factory(Record::class, 30)->create();
         
         }
     }
