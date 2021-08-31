@@ -28,6 +28,14 @@
                         <table class="table table-striped">
                             <tr>
                                 <td>
+                                    {{__('main.dealer')}}
+                                </td>
+                                <td>
+                                    <strong>{{$record->dealer->name}}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     {{__('main.client_name')}}
                                 </td>
                                 <td>

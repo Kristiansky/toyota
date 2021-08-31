@@ -44,6 +44,7 @@ class RecordController extends Controller
                 'web_form' => request('web_form'),
                 'dealer' => request('dealer'),
                 'dealer_info' => request('dealer_info'),
+                'dealer_merchant' => request('dealer_merchant'),
                 'status' => request('status'),
                 'dealer_progress_status' => request('dealer_progress_status'),
                 'created_at_from' => request('created_at_from'),
@@ -78,6 +79,9 @@ class RecordController extends Controller
             }
             if(session('records_filter')['dealer_info'] && session('records_filter')['dealer_info'] != ''){
                 $query->where('dealer_info', '=', session('records_filter')['dealer_info']);
+            }
+            if(session('records_filter')['dealer_merchant'] && session('records_filter')['dealer_merchant'] != ''){
+                $query->where('dealer_merchant', 'like', '%' . session('records_filter')['dealer_merchant'] . '%');
             }
             if(session('records_filter')['status'] && session('records_filter')['status'] != ''){
                 $query->where('status', '=', session('records_filter')['status']);
@@ -210,7 +214,7 @@ class RecordController extends Controller
         foreach($emails as $email){
             Mail::send([], [], function ($message) use ($html, $record, $email) {
                 $message->to($email)
-                    ->subject('Нова заявка №' . $record->id)
+                    ->subject('Нова заявка №' . $record->id . ' | ' . $record->dealer->name)
                     ->from('toyota.leads@metrica.bg')
                     ->setBody($html, 'text/html');
             });
@@ -262,11 +266,13 @@ class RecordController extends Controller
     {
         $validation = array(
             'dealer_id' => 'required',
+            'dealer_merchant' => 'required|min:3|max:255',
         );
     
         if(request('fillForm')){
             $validation = array(
                 'status' => 'required',
+                'dealer_merchant' => 'required|min:3|max:255',
             );
             unset($request['fillForm']);
         }

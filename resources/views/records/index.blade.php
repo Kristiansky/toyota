@@ -67,6 +67,14 @@
                             </div>
                             <div class="col-4 col-lg-1">
                                 <div class="form-group">
+                                    <label class="text-sm" for="dealer_merchant">
+                                        {{__('main.dealer_merchant')}}
+                                    </label>
+                                    <input type="text" class="form-control form-control-sm" name="dealer_merchant" id="dealer_merchant" autocomplete="off" placeholder="{{__('main.dealer_merchant')}}" value="{{isset(session('records_filter')['dealer_merchant']) ? session('records_filter')['dealer_merchant'] : ''}}">
+                                </div>
+                            </div>
+                            <div class="col-4 col-lg-1">
+                                <div class="form-group">
                                     <label class="text-sm" for="status">{{__('main.status')}}</label>
                                     <select class="form-control form-control-sm" id="status" name="status">
                                         <option value="">{{ __('main.choose') }}</option>
@@ -87,32 +95,22 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-4 col-lg-3">
+                            <div class="col-4 col-lg-2">
                                 <div class="row">
                                     <div class="col-4 col-lg-6">
                                         <div class="form-group">
                                             <label class="text-sm" for="created_at_from">
-                                                {{__('main.created_at_from')}}:
+                                                {{__('main.created_at_from')}}
                                             </label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control form-control-sm" name="created_at_from" id="created_at_from" autocomplete="off" placeholder="{{__('main.created_at_from')}}" value="{{isset(session('records_filter')['created_at_from']) ? session('records_filter')['created_at_from'] : ''}}">
-                                                <div class="input-group-append">
-                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                                </div>
-                                            </div>
+                                            <input type="text" class="form-control form-control-sm" name="created_at_from" id="created_at_from" autocomplete="off" placeholder="{{__('main.created_at_from')}}" value="{{isset(session('records_filter')['created_at_from']) ? session('records_filter')['created_at_from'] : ''}}">
                                         </div>
                                     </div>
                                     <div class="col-4 col-lg-6">
                                         <div class="form-group">
                                             <label class="text-sm" for="created_at_to">
-                                                {{__('main.created_at_to')}}:
+                                                {{__('main.created_at_to')}}
                                             </label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control form-control-sm" name="created_at_to" id="created_at_to" autocomplete="off" placeholder="{{__('main.created_at_to')}}" value="{{isset(session('records_filter')['created_at_to']) ? session('records_filter')['created_at_to'] : ''}}">
-                                                <div class="input-group-append">
-                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                                </div>
-                                            </div>
+                                            <input type="text" class="form-control form-control-sm" name="created_at_to" id="created_at_to" autocomplete="off" placeholder="{{__('main.created_at_to')}}" value="{{isset(session('records_filter')['created_at_to']) ? session('records_filter')['created_at_to'] : ''}}">
                                         </div>
                                     </div>
                                 </div>

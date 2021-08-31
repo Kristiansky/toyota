@@ -51,8 +51,11 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label for="dealer_merchant">{{__('main.dealer_merchant')}}</label>
-                            <input type="text" class="form-control " id="dealer_merchant" name="dealer_merchant" placeholder="{{__('main.dealer_merchant')}}" value="{{$record->dealer_merchant}}"/>
+                            <label for="dealer_merchant">{{__('main.dealer_merchant')}} <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control @error('dealer_merchant') is-invalid @enderror" id="dealer_merchant" name="dealer_merchant" placeholder="{{__('main.dealer_merchant')}}" value="{{$record->dealer_merchant}}" required/>
+                            @error('dealer_merchant')
+                            <div class="invalid-feedback">{{$message}}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-lg-6">
