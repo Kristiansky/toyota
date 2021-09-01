@@ -211,6 +211,7 @@
                                                     <a href="{{route('records.fill', $record->id)}}" class="btn btn-primary btn-sm float-left mr-2"><i class="fa fa-edit"></i></a>
                                                 @elseif(auth()->user()->hasRole('merchant'))
                                                     <a href="{{route('records.show', $record->id)}}" class="btn btn-success btn-sm float-left mr-2"><i class="fa fa-eye"></i></a>
+                                                    <a href="{{route('records.fill', $record->id)}}" class="btn btn-primary btn-sm float-left mr-2"><i class="fa fa-edit"></i></a>
                                                 @endif
                                             </td>
                                         </tr>
