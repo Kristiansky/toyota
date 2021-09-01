@@ -49,20 +49,23 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label for="dealer_merchant">{{__('main.dealer_merchant')}} <span class="text-danger">*</span></label>
-                            <select class="form-control selectpicker @error('dealer_merchant') is-invalid @enderror " data-live-search="true" data-size="0" id="dealer_merchant" name="dealer_merchant" title="{{ __('main.choose') }}" required>
-                                <option value="">{{ __('main.choose') }}</option>
-                                @foreach($merchants as $merchant)
-                                    <option value="{{$merchant->id}}" {{$merchant->id == $record->dealer_merchant ? 'selected' : ''}}>{{ $merchant->name }} [{{ $merchant->email }}]</option>
-                                @endforeach
-                            </select>
-                            @error('dealer_merchant')
-                            <div class="invalid-feedback">{{$message}}</div>
-                            @enderror
+
+                    @if(auth()->user()->hasRole('administrator') || auth()->user()->hasRole('manager') || auth()->user()->hasRole('dealer'))
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="dealer_merchant">{{__('main.dealer_merchant')}} <span class="text-danger">*</span></label>
+                                <select class="form-control selectpicker @error('dealer_merchant') is-invalid @enderror " data-live-search="true" data-size="0" id="dealer_merchant" name="dealer_merchant" title="{{ __('main.choose') }}" required>
+                                    <option value="">{{ __('main.choose') }}</option>
+                                    @foreach($merchants as $merchant)
+                                        <option value="{{$merchant->id}}" {{$merchant->id == $record->dealer_merchant ? 'selected' : ''}}>{{ $merchant->name }} [{{ $merchant->email }}]</option>
+                                    @endforeach
+                                </select>
+                                @error('dealer_merchant')
+                                <div class="invalid-feedback">{{$message}}</div>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
+                    @endif
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="dealer_comment">{{__('main.dealer_comment')}}</label>
