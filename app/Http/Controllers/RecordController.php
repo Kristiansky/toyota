@@ -14,7 +14,7 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxRead;
 class RecordController extends Controller
 {
     
-    public $web_forms_options = ['contact', 'test_drive', 'car_configurator', 'tbglc_leasing', 'tdio_test_drive', 'tdio_offer', 'tdio_brochure', 'contact_request', 'used_car', 'test_drive_appointment_request', 'online_reservation'];
+    public $web_forms_options = ['contact', 'test_drive', 'car_configurator', 'tbglc_leasing', 'tdio_test_drive', 'tdio_offer', 'tdio_brochure', 'contact_request', 'used_car', 'test_drive_appointment_request', 'online_reservation', 'service', 'autoparts'];
     public $cars_options = ['aygo', 'yaris', 'corolla_hatchback', 'corolla_touring_sports', 'corolla_sedan', 'camry', 'yaris_cross', 'c-hr', 'rav4', 'highlander', 'land_cruiser', 'hilux', 'proace', 'proace_verso', 'proace_city', 'proace_city_verso', 'other'];
     public $contact_validation_options = ['call', 'email', 'not_validated'];
     public $status_options = ['new', 'reminded', 'late', 'accepted', 'in_process', 'completed'];

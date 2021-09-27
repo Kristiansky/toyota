@@ -28,6 +28,8 @@
         'used_car' => 'Used Car Contact Request',
         'test_drive_appointment_request' => 'Test-Drive Appointment Request',
         'online_reservation' => 'Онлайн резервация',
+        'service' => 'Сервиз',
+        'autoparts' => 'Авточасти',
         'choose' => 'Избери',
         'order' => 'Поръчка',
         'test_drive_success' => 'Направен тест драйв',
