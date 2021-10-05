@@ -351,13 +351,14 @@ class RecordController extends Controller
         $status_options_fill = $this->status_options_fill;
         $dealer_info_options = $this->dealer_info_options;
         $dealer_progress_status_options = $this->dealer_progress_status_options;
-        $merchants = User::where('parent_id', '=', $record->dealer_id)->whereHas('roles', function ($query) {
-            if (auth()->user()->hasRole(['dealer'])){
-                $query->where('parent_id', '=', auth()->user()->id);
-            }else{
-                $query->where('slug', '=', 'merchant');
-            }
-        })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
+//        $merchants = User::where('parent_id', '=', $record->dealer_id)->whereHas('roles', function ($query) {
+//            if (auth()->user()->hasRole(['dealer'])){
+//                $query->where('parent_id', '=', auth()->user()->id);
+//            }else{
+//                $query->where('slug', '=', 'merchant');
+//            }
+//        })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
+        $merchants = User::where('parent_id', '=', $record->dealer_id)->select('users.id as id', 'users.name as name', 'users.email as email')->get();
         return view('records.fill', compact('record', 'status_options_fill', 'dealer_info_options', 'dealer_progress_status_options', 'merchants'));
     }
 }
