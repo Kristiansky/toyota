@@ -292,19 +292,21 @@ class RecordController extends Controller
             );
             unset($request['fillForm']);
         }
+        
         if((int)$record->dealer_merchant != (int)$request->dealer_merchant){
-    
+            $new_dealer = User::find((int)$request->dealer_merchant)->first();
+            
             $html = 'Здравейте,<br/>Имате има разпределена заявка в системата. За по-лесен достъп може да проследите посочения линк:<br/><a href="' . route('records.show', $record) . '">Кликнете тук за да видите детайлите</a>.<br/>Поздрави,<br/>Екипът на Метрика';
             
-            $emails = [$record->the_merchant()->email];
-            if (strpos($record->the_merchant()->additional_emails, ',') !== false) {
-                $cc_emails = explode(',', $record->the_merchant()->additional_emails);
+            $emails = [$new_dealer->email];
+            if (strpos($new_dealer->additional_emails, ',') !== false) {
+                $cc_emails = explode(',', $new_dealer->additional_emails);
                 $cc_emails = array_map('trim', $cc_emails);
                 foreach ($cc_emails as $cc_email){
                     $emails[] = $cc_email;
                 }
-            }elseif(strpos($record->the_merchant()->additional_emails, ',') !== true && $record->the_merchant()->additional_emails != null){
-                $emails[] = $record->the_merchant()->additional_emails;
+            }elseif(strpos($new_dealer->additional_emails, ',') !== true && $new_dealer->additional_emails != null){
+                $emails[] = $new_dealer->additional_emails;
             }
     
             foreach($emails as $email){
