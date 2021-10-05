@@ -282,7 +282,7 @@ class RecordController extends Controller
     {
         $validation = array(
             'dealer_id' => 'required',
-            'dealer_merchant' => 'required',
+//            'dealer_merchant' => 'required',
         );
     
         if(request('fillForm')){
@@ -347,9 +347,10 @@ class RecordController extends Controller
         $dealer_info_options = $this->dealer_info_options;
         $dealer_progress_status_options = $this->dealer_progress_status_options;
         $merchants = User::whereHas('roles', function ($query) {
-            $query->where('slug', '=', 'merchant');
             if (auth()->user()->hasRole(['dealer'])){
                 $query->where('parent_id', '=', auth()->user()->id);
+            }else{
+                $query->where('slug', '=', 'merchant');
             }
         })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
         return view('records.fill', compact('record', 'status_options_fill', 'dealer_info_options', 'dealer_progress_status_options', 'merchants'));
