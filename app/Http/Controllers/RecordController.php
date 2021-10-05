@@ -266,7 +266,7 @@ class RecordController extends Controller
         $dealer_info_options = $this->dealer_info_options;
         $dealer_progress_status_options = $this->dealer_progress_status_options;
         $status_options = $this->status_options;
-        $dealers = User::whereHas('roles', function ($query) {
+        $dealers = User::where('parent_id', '=', null)->whereHas('roles', function ($query) {
             $query->where('slug', '=', 'dealer');
         })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
         $merchants = User::whereHas('roles', function ($query) {
