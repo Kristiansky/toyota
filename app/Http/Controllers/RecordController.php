@@ -269,10 +269,9 @@ class RecordController extends Controller
         $dealers = User::where('parent_id', '=', null)->whereHas('roles', function ($query) {
             $query->where('slug', '=', 'dealer');
         })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
-//        $merchants = User::where('parent_id', '=', $record->dealer_id)->whereHas('roles', function ($query) {
-//            $query->where('slug', '=', 'merchant')->where('slug', '=', 'dealer');
-//        })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
-        $merchants = User::where('parent_id', '=', $record->dealer_id)->select('users.id as id', 'users.name as name', 'users.email as email')->get();
+        $merchants = User::where('parent_id', '=', $record->dealer_id)->whereHas('roles', function ($query) {
+            $query->where('slug', '=', 'merchant')->where('slug', '=', 'dealer');
+        })->select('users.id as id', 'users.name as name', 'users.email as email')->get();
         return view('records.edit', compact('record', 'web_forms_options', 'cars_options', 'contact_validation_options', 'dealers', 'merchants', 'dealer_info_options', 'dealer_progress_status_options', 'status_options'));
     }
 
