@@ -70,7 +70,8 @@ class RecordController extends Controller
         if (auth()->user()->hasRole(['administrator', 'manager'])){
         
         }elseif(auth()->user()->hasRole(['dealer'])){
-            $records->where('dealer_id', '=' , auth()->user()->id);
+            $records->where('dealer_id', '=' , auth()->user()->id)
+                ->where('dealer_id', '=' , auth()->user()->parent_id);
         }elseif(auth()->user()->hasRole(['merchant'])){
             $records->where('dealer_merchant', '=' , auth()->user()->id);
         }
