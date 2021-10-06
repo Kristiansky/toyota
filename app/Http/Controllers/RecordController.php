@@ -39,6 +39,8 @@ class RecordController extends Controller
         
         if(auth()->user()->parent_id == null && auth()->user()->hasRole(['dealer', 'manager', 'administrator'])){
             $merchants = User::where('parent_id', '=', auth()->user()->id)->select('users.id as id', 'users.name as name', 'users.email as email')->get();
+        }elseif(auth()->user()->parent_id != null && auth()->user()->hasRole(['dealer', 'manager', 'administrator'])){
+            $merchants = User::where('parent_id', '=', auth()->user()->parent_id)->select('users.id as id', 'users.name as name', 'users.email as email')->get();
         }else{
             $merchants = array();
         }
