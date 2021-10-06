@@ -299,7 +299,7 @@ class RecordController extends Controller
         }
         
         if((int)$record->dealer_merchant != (int)$request->dealer_merchant){
-            $new_dealer = User::find((int)$request->dealer_merchant)->first();
+            $new_dealer = User::where('id', '=', (int)$request->dealer_merchant)->first();
             
             $html = 'Здравейте,<br/>Имате има разпределена заявка в системата. За по-лесен достъп може да проследите посочения линк:<br/><a href="' . route('records.show', $record) . '">Кликнете тук за да видите детайлите</a>.<br/>Поздрави,<br/>Екипът на Метрика';
             
