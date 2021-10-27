@@ -32,7 +32,7 @@ class CreateRecordsTable extends Migration
             $table->boolean('approved_gdpr_marketing')->default(false);
             $table->boolean('approved_gdpr_no')->default(false);
             $table->enum('status', ['new', 'reminded', 'late', 'accepted', 'completed'])->nullable();
-            $table->enum('dealer_info', ['no_feedback', 'not_serious_interest', 'sent_offer', 'test_drive_set', 'sent_offer'])->nullable();
+            $table->enum('dealer_info', ['no_feedback', 'not_serious_interest', 'sent_offer', 'test_drive_set', 'order'])->nullable();
             $table->enum('dealer_progress_status', ['client', 'hot', 'warm', 'cold', 'lost'])->nullable();
             $table->foreignId('dealer_merchant')->unsigned()->nullable()->index();
             $table->text('dealer_comment')->nullable();
