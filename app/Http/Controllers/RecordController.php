@@ -20,7 +20,7 @@ class RecordController extends Controller
     public $status_options = ['new', 'reminded', 'late', 'accepted', 'completed'];
     public $status_options_fill = ['accepted', 'completed'];
     public $dealer_info_options = ['order', 'test_drive_success', 'test_drive_set', 'will_visit_showroom', 'sent_offer', 'sent_borchure', 'sent_leasing_sim', 'second_hand', 'not_serious_interest', 'waiting', 'gave_up', 'no_feedback', 'wrong_contact'];
-    public $dealer_progress_status_options = ['client', 'hot', 'warm', 'cold', 'lost'];
+    public $dealer_progress_status_options = ['lost', 'cold', 'hot', 'closed_deal'];
     
     /**
      * Display a listing of the resource.

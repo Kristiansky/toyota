@@ -37,7 +37,7 @@ $factory->define(Record::class, function (Faker $faker) {
         'approved_gdpr_no' => $faker->boolean(),
         'status' => $faker->randomElement(['new', 'reminded', 'late', 'accepted', 'completed']),
         'dealer_info' => $faker->randomElement(['order', 'test_drive_success', 'test_drive_set', 'will_visit_showroom', 'sent_offer', 'sent_borchure', 'sent_leasing_sim', 'second_hand', 'not_serious_interest', 'waiting', 'gave_up', 'no_feedback', 'wrong_contact']),
-        'dealer_progress_status' => $faker->randomElement(['client', 'hot', 'warm', 'cold', 'lost']),
+        'dealer_progress_status' => $faker->randomElement(['lost', 'cold', 'hot', 'closed_deal']),
         'dealer_merchant' => $dealer_merchant,
         'dealer_comment' => $faker->realText(10,1),
     ];
