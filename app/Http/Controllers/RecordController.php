@@ -19,7 +19,7 @@ class RecordController extends Controller
     public $contact_validation_options = ['call', 'email', 'not_validated'];
     public $status_options = ['new', 'reminded', 'late', 'accepted', 'completed'];
     public $status_options_fill = ['accepted', 'completed'];
-    public $dealer_info_options = ['order', 'test_drive_success', 'test_drive_set', 'will_visit_showroom', 'sent_offer', 'sent_borchure', 'sent_leasing_sim', 'second_hand', 'not_serious_interest', 'waiting', 'gave_up', 'no_feedback', 'wrong_contact'];
+    public $dealer_info_options = ['no_feedback', 'not_serious_interest', 'sent_offer', 'test_drive_set', 'sent_offer'];
     public $dealer_progress_status_options = ['lost', 'cold', 'hot', 'closed_deal'];
     
     /**
