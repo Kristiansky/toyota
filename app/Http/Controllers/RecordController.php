@@ -219,7 +219,7 @@ class RecordController extends Controller
         $inputs['status'] = 'new';
         $record = Record::create($inputs);
     
-        $html = 'Здравейте,<br/>Имате нова заявка в системата. За по-лесен достъп може да проследите посочения линк:<br/><a href="' . route('records.show', $record) . '">Кликнете тук за да видите детайлите</a>.<br/>Поздрави,<br/>Екипът на Метрика';
+        $html = 'Здравейте,<br/>Имате нова заявка в системата. За по-лесен достъп може да проследите посочения линк:<br/><a href="' . route('records.edit', $record) . '">Кликнете тук за да видите детайлите</a>.<br/>Поздрави,<br/>Екипът на Метрика';
     
         $emails = [$record->dealer->email];
         if (strpos($record->dealer->additional_emails, ',') !== false) {
@@ -305,7 +305,7 @@ class RecordController extends Controller
         if((int)$record->dealer_merchant != (int)$request->dealer_merchant){
             $new_dealer = User::where('id', '=', (int)$request->dealer_merchant)->first();
             
-            $html = 'Здравейте,<br/>Имате има разпределена заявка в системата. За по-лесен достъп може да проследите посочения линк:<br/><a href="' . route('records.show', $record) . '">Кликнете тук за да видите детайлите</a>.<br/>Поздрави,<br/>Екипът на Метрика';
+            $html = 'Здравейте,<br/>Имате има разпределена заявка в системата. За по-лесен достъп може да проследите посочения линк:<br/><a href="' . route('records.edit', $record) . '">Кликнете тук за да видите детайлите</a>.<br/>Поздрави,<br/>Екипът на Метрика';
             
             $emails = [$new_dealer->email];
             if (strpos($new_dealer->additional_emails, ',') !== false) {
