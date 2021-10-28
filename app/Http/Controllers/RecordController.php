@@ -329,9 +329,10 @@ class RecordController extends Controller
                 });
             }
         }
-        
-        $request->validate($validation);
+    
         dd($request->validate($validation));
+        $request->validate($validation);
+        
         $record->update($request->all());
         session()->flash('message', 'Обаждането е редактирано');
     
