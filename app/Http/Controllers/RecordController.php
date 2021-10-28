@@ -330,7 +330,7 @@ class RecordController extends Controller
             }
         }
     
-        dd($request->validate($validation));
+        dd('test');
         $request->validate($validation);
         
         $record->update($request->all());
