@@ -304,6 +304,8 @@ class RecordController extends Controller
             $is_fill = true;
         }
         
+        dd($request->all());
+        
         if(((int)$record->dealer_merchant != (int)$request->dealer_merchant) && $is_fill == false){
             $new_dealer = User::where('id', '=', (int)$request->dealer_merchant)->first();
             
