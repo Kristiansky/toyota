@@ -331,7 +331,7 @@ class RecordController extends Controller
         }
         
         $request->validate($validation);
-        
+        dd($request->all());
         $record->update($request->all());
         session()->flash('message', 'Обаждането е редактирано');
     
