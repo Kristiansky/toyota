@@ -298,7 +298,6 @@ class RecordController extends Controller
         if(request('fillForm')){
             $validation = array(
                 'status' => 'required',
-                'dealer_merchant' => 'required',
             );
             unset($request['fillForm']);
             $is_fill = true;
@@ -330,7 +329,6 @@ class RecordController extends Controller
             }
         }
     
-        dd('test');
         $request->validate($validation);
         
         $record->update($request->all());
